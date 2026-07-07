@@ -1,4 +1,0 @@
-
----
-
-#### **📄 Dosya 2: `LICENSE`** (MIT Lisansı)
