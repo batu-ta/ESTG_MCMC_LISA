@@ -1,0 +1,204 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[turkish]{babel}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+
+\title{\textbf{Entropik Skaler-Tensör Kütleçekiminin Planck, BBN ve LISA ile Sınırlandırılması: \\ Çoklu-Mesajcı ve Sayısal Veri Analizi Yaklaşımı}}
+\author{\textbf{Ahmet Batuhan Dündar} \\
+\small İstanbul Kent Üniversitesi \\
+\small \texttt{https://github.com/batu-ta/ESTG\_MCMC\_LISA}}
+\date{July 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Bu çalışmada, uzay-zaman eğriliğine yerel kuantum dolanıklık entropi yoğunluğuyla bağlanan skaler bir alan içeren Entropik Skaler-Tensör Kütleçekimi (ESTG) teorisinin kozmolojik ve astrofiziksel kısıtları incelenmiştir. Teori, yerel Güneş Sistemi testlerinden (Cassini) kaçınabilmek adına bir Chameleon mekanizması ile donatılmıştır. Kozmik Mikrodalga Arka Planı (Planck 2018), Büyük Patlama Nükleosentezi (BBN) ve LIGO/Virgo O3 gözlemlerini kapsayan çoklu-mesajcı veri setleriyle yürütülen 4 zincirli Metropolis-Hastings MCMC analizi sonucunda, teorinin serbest parametresi $\alpha_M$ için $|\alpha_M| < 0.027$ (\%95 C.L.) üst sınırı elde edilmiştir ($R - 1 = 0.0003$). Model karşılaştırmasında Akaike Bilgi Kriteri ($\Delta\text{AIC} = 1.92$) ve Savage-Dickey yoğunluk oranıyla hesaplanan Bayes faktörü ($\ln B = -0.93$), verilerin Genel Görelilik (GR) ile ESTG arasında ayrım yapamadığını doğrulamaktadır. 
+
+Gelecek perspektifinde, uzay tabanlı kütleçekimsel dalga gözlemevi LISA için Robson, Cornish \& Liu (2019) analitik gürültü spektral yoğunluğu ($S_n(f)$) ve 0PN TaylorF2 dalga formu kullanılarak çok parametreli marjinalize edilmiş Fisher Bilgi Matrisi analizi gerçekleştirilmiştir. $10^6 + 10^6 M_\odot$ kütleli süper kütleli kara delik ikilileri ($z=1$) için parametre korelasyonları hesaba katıldığında, LISA'nın $\alpha_M$ üzerindeki duyarlılığı $\sigma(\alpha_M) \approx 2.81 \times 10^{-4}$ seviyesine indirebileceği kanıtlanmıştır. Çalışmada kullanılan tüm analiz protokolleri, simülasyon kodları ve MCMC zincirleri açık erişimli olarak paylaşılmıştır.
+\end{abstract}
+
+\section{Giriş}
+Genel Görelilik (GR), Güneş Sistemi ölçeklerinden kozmolojik mesafelere kadar sayısız testten başarıyla geçmiştir. Ancak kozmolojik sabit problemi, karanlık sektörün (karanlık madde ve karanlık enerji) mikroskobik kökeninin bilinmemesi ve kuantum kütleçekimi teorisinin eksikliği, GR ötesi fizik arayışlarını zorunlu kılmaktadır. Son yıllarda Holografik Prensip ve AdS/CFT uyuşumu çerçevesinde, uzay-zaman geometrisinin mikroskobik bilgi ve kuantum dolanıklığı üzerinden türeyen (emergent) bir yapı olabileceği fikri güç kazanmıştır.
+
+Bu çalışmada, bu teorik arka plan, yerel kuantum dolaşıklık entropisinin uzay-zaman eğriliğine minimal olmayan biçimde bağlandığı, test edilebilir ve yanlışlanabilir bir skaler-tensör teorisine dönüştürülmektedir. Teorinin temel fiziksel varsayımı şudur:
+\begin{quote}
+\textit{Varsayım:} Her uzay-zaman noktasında, madde yoğunluğuyla ilişkili skaler bir alan $\phi(x^\mu)$, yerel kuantum entropi yoğunluğunu temsil eder ve bu alan Einstein alan denklemlerinde dinamik bir kaynak terimi olarak yer alır.
+\end{quote}
+
+Bu makale, teorinin eylem formülasyonunu, kozmolojik MCMC protokolünü ve LISA kütleçekimsel dalga duyarlılık simülasyonlarını tutarlı ve yeniden üretilebilir tek bir çatı altında sunmaktadır.
+
+\section{Teorik Çerçeve}
+
+\subsection{Jordan Çerçevesinde Eylem}
+Teori, skaler alanın metrikle minimal olmayan şekilde bağlandığı fiziksel Jordan çerçevesinde kurulur:
+\begin{equation}
+S_J = \int d^4x \sqrt{-g} \left[ \frac{1}{2} F(\phi) R - \frac{1}{2} Z(\phi) (\partial_\mu \phi)(\partial^\mu \phi) - V(\phi) \right] + S_m(g_{\mu\nu}, \psi_m)
+\label{eq:action_jordan}
+\end{equation}
+Burada:
+\begin{itemize}
+    \item $F(\phi) = M_*^2(\phi) = M_{Pl}^2 e^{2\beta \phi / M_{Pl}}$: Skaler alana bağlı etkin Planck kütlesidir.
+    \item $Z(\phi) = 1$: Standart kanonik kinetik normalizasyondur.
+    \item $V(\phi)$: Yüksek yoğunluklarda alanı perdeleyen Chameleon potansiyelidir.
+    \item $S_m$: Madde eylemidir; madde fiziksel metrik $g_{\mu\nu}$'ye doğrudan bağlanır.
+\end{itemize}
+
+\subsection{Einstein Çerçevesine Konformal Dönüşüm}
+Analizi basitleştirmek adına kütleçekim kısmını standart GR formuna getiren Einstein çerçevesine geçilir:
+\begin{equation}
+\tilde{g}_{\mu\nu} = \Omega^2(x) g_{\mu\nu}, \quad \Omega^2(x) \equiv \frac{F(\phi)}{M_{Pl}^2}
+\end{equation}
+Bu dönüşüm altında metriğin determinantı $\sqrt{-g} = \Omega^{-4} \sqrt{-\tilde{g}}$ ve Ricci skateri $R = \Omega^2 (\tilde{R} + 6\tilde{\Box}\omega - 6\tilde{g}^{\mu\nu} \partial_\mu\omega \partial_\nu\omega)$ olur ($\omega \equiv \ln \Omega$). Yeni skaler alan $\varphi$ şu bağıntıyla tanımlanır:
+\begin{equation}
+\left( \frac{d\varphi}{d\phi} \right)^2 = \frac{3}{2} \left( \frac{F_{,\phi}}{F} \right)^2 + \frac{Z(\phi)}{F(\phi)}
+\end{equation}
+$\beta \gg 1$ sınırında $\varphi \approx \sqrt{6}\beta (\phi / M_{Pl})$ analitik çözümü elde edilir ve $F(\phi) \approx M_{Pl}^2 e^{2\varphi / \sqrt{6}}$ üstel formu korunur. Einstein çerçevesinde eylem şu hale gelir:
+\begin{equation}
+S_E = \int d^4x \sqrt{-\tilde{g}} \left[ \frac{M_{Pl}^2}{2} \tilde{R} - \frac{1}{2} (\tilde{\partial}_\mu \varphi)(\tilde{\partial}^\mu \varphi) - U(\varphi) \right] + S_m\left( A^2(\varphi)\tilde{g}_{\mu\nu}, \psi_m \right)
+\end{equation}
+Burada $U(\varphi) = V(\phi(\varphi)) M_{Pl}^4 / F^2(\phi(\varphi))$ dönüştürülmüş potansiyel ve $A(\varphi) = \Omega^{-1}(\varphi) = M_{Pl} / M_*(\phi(\varphi))$ madde bağlanma fonksiyonudur.
+
+\subsection{Alan Denklemleri ve GW170817 Hız Kısıtı}
+Eylemin $\tilde{g}_{\mu\nu}$ ve $\varphi$'ye göre varyasyonu alan denklemlerini verir:
+\begin{align}
+\tilde{G}_{\mu\nu} &= \frac{1}{M_{Pl}^2} \left( \tilde{T}^{(m)}_{\mu\nu} + \tilde{T}^{(\varphi)}_{\mu\nu} \right) \\
+\tilde{\Box}\varphi - U_{,\varphi}(\varphi) &= -\frac{1}{M_{Pl}} \alpha(\varphi) \tilde{T}^{(m)}
+\end{align}
+Bağlanma fonksiyonu $\alpha(\varphi) \equiv \frac{d\ln A(\varphi)}{d\varphi} = -\frac{1}{2} \frac{d\ln F}{d\varphi} = -\beta / M_{Pl}$ sabittir.
+
+Tensör pertürbasyonları $h_{ij}$, Jordan çerçevesinde etkin Planck kütlesinin zamanla evrimi nedeniyle modifiye olur:
+\begin{equation}
+\ddot{h}_{ij} + (3 + \alpha_M) H \dot{h}_{ij} - \frac{1}{a^2} \nabla^2 h_{ij} = 0, \quad \alpha_M \equiv \frac{1}{H} \frac{d\ln M_*^2}{dt}
+\label{eq:tensor_prop}
+\end{equation}
+Horndeski skaler-tensör teorilerinde kütleçekimsel dalgaların yayılma hızı $c_T^2 = (1 + \alpha_T)/(1 - \alpha_H)$ ile verilir. ESTG eyleminde kinetik kuplaj terimleri bulunmadığından $\alpha_T = \alpha_H = 0$ olur ve $c_T = c$ koşulu otomatik olarak sağlanır. Bu durum, GW170817/GRB170817A gözleminden gelen $|c_T/c - 1| < 10^{-15}$ kısıtıyla tam uyumludur.
+
+\subsection{Chameleon Mekanizması ve Dipol Işınımı Kısıtı}
+Skaler alanın etkin kütlesi ortam yoğunluğuna bağlı olarak artar:
+\begin{equation}
+m_{\text{eff}}^2 = V_{,\phi\phi} + A_{,\phi\phi} \rho_m + A_{,\phi}^2 \rho_m
+\end{equation}
+Bu perdeleme, Güneş Sistemi ölçeğinde $\alpha_M$'yi $|\alpha_M| \lesssim 10^{-3}$ düzeyine baskılar ve Cassini deneyinin PPN parametresi üzerindeki $|\gamma - 1| < 2.3 \times 10^{-5}$ sınırını sağlar.
+
+Damour-Esposito-Farèse (DEF) formalizminde ikili nötron yıldızı sistemlerinde skaler dipol ışıması nedeniyle oluşan yörünge periyot değişimi:
+\begin{equation}
+\dot{P}_b^{\text{dipol}} = -\frac{2\pi G}{c^3} \frac{M_1 M_2}{M_1 + M_2} \frac{(\alpha_1 - \alpha_2)^2}{1 + \alpha_M} \frac{1}{P_b}
+\end{equation}
+GW170817 için gözlemsel hata payı $|\dot{P}_b| \lesssim 10^{-14}$ olup, $|\alpha_1 - \alpha_2| \sim \beta \times (\Delta \text{kompaktlık}) \sim 0.01 \beta$ yerleştirildiğinde $\beta \lesssim 0.075$ üst sınırı elde edilir.
+
+\section{Kozmolojik Veriler ve MCMC Analiz Protokolü}
+
+\subsection{Veri Setleri ve Likelihood Formülasyonu}
+Teorinin kozmolojik ölçeklerdeki parametresi $\alpha_M$, şu veri setleri ile sınırlandırılmıştır:
+\begin{enumerate}
+    \item \textbf{Planck 2018 CMB:} TT, TE, EE + lowE + lensing verileri ($\ell_{\max} = 2500$ TT, $\ell_{\max} = 2000$ TE, EE).
+    \item \textbf{BBN:} Baryon yoğunluğu $\Omega_b h^2 = 0.0222 \pm 0.0005$ (Cooke et al. 2018), $\chi^2_{\text{BBN}} = [(\Omega_b h^2 - 0.0222)/0.0005]^2$.
+    \item \textbf{LIGO/Virgo O3:} $|\alpha_M| < 0.05$ (\%90 C.L.) üst sınırı.
+\end{enumerate}
+
+\subsection{MCMC Örneklemesi ve Yakınsama (Gelman-Rubin)}
+Analiz, CLASS ve MontePython altyapısına uygun olarak 4 paralel zincir üzerinden toplam 100.000 adım (20.000 adım burn-in) ile koşturulmuştur. Parametre uzayı $\theta = \{\alpha_M, \Omega_{\text{cdm}}, \Omega_b, h\}$ için düz (flat) öncüller tanımlanmıştır: $\alpha_M \in [-0.1, 0.1]$, $\Omega_{\text{cdm}} \in [0.05, 0.25]$, $\Omega_b \in [0.015, 0.030]$, $h \in [0.5, 0.9]$.
+
+Zincirler arasındaki Gelman-Rubin yakınsama tanısı:
+\begin{equation}
+R - 1 = \sqrt{\frac{\hat{V}}{W}} - 1 = 0.0003 \quad (\text{Hedef: } < 0.01)
+\end{equation}
+olarak hesaplanmış ve zincirlerin tam dengelendiği doğrulanmıştır. 
+
+\subsection{Model Karşılaştırması: AIC ve Savage-Dickey Bayes Faktörü}
+Nelder-Mead optimizasyonu ile elde edilen en iyi uyum (best-fit) $\chi^2$ değerleri:
+\begin{itemize}
+    \item GR Modeli ($\alpha_M = 0$ sabit, $k=23$): $\chi^2_{\text{GR}} = 2844.02$
+    \item ESTG Modeli ($\alpha_M$ serbest, $k=24$): $\chi^2_{\text{ESTG}} = 2843.94$
+    \item İyileşme: $\Delta\chi^2 = -0.08$
+\end{itemize}
+Akaike Bilgi Kriteri ($\text{AIC} = \chi^2 + 2k$):
+\begin{equation}
+\Delta\text{AIC} = \text{AIC}_{\text{ESTG}} - \text{AIC}_{\text{GR}} = 1.92
+\end{equation}
+$\Delta\text{AIC} < 2$ olması, ek serbest parametrenin model uyumunu istatistiksel olarak anlamlı düzeyde iyileştirmediğini gösterir.
+
+Savage-Dickey yoğunluk oranı ile hesaplanan Bayes faktörü:
+\begin{equation}
+B = \frac{p(\alpha_M = 0 \mid \text{data})}{\pi(\alpha_M = 0)} \implies \ln B = -0.93
+\end{equation}
+Bu değer, mevcut kozmolojik verilerin ESTG ile GR arasında istatistiksel bir ayrım yapamadığını, ancak teoriyi \%95 güven düzeyinde $|\alpha_M| < 0.027$ seviyesine başarıyla kısıtladığını ortaya koymaktadır.
+
+\section{LISA Hassasiyet Tahminleri ve Çok Parametreli Fisher Analizi}
+
+\subsection{Gerçekçi LISA Gürültü Modeli}
+LISA simülasyonlarında Robson, Cornish \& Liu (2019) analitik gökyüzü-ortalamalı gerinim gürültü spektral yoğunluğu $S_n(f)$ kullanılmıştır ($L = 2.5 \times 10^9$ m, $f_* = c / (2\pi L) \approx 19.09$ mHz):
+\begin{equation}
+S_n(f) = \frac{10}{3 L^2} \left[ P_{\text{oms}}(f) + \frac{4 P_{\text{acc}}(f)}{(2\pi f)^4} \right] \left[ 1 + \frac{6}{10} \left(\frac{f}{f_*}\right)^2 \right] + S_c(f)
+\end{equation}
+Burada Optik Metroloji Sistemi (OMS) pozisyon gürültüsü $P_{\text{oms}}(f) = (1.5 \times 10^{-11}\text{ m})^2 [1 + (2\text{ mHz}/f)^4]$ ve test kütlesi ivme gürültüsü $P_{\text{acc}}(f) = (3.0 \times 10^{-15}\text{ m/s}^2)^2 [1 + (0.4\text{ mHz}/f)^2][1 + (f/8\text{ mHz})^4]$ olarak modellenmiştir. $S_c(f)$ ise 4 yıllık gözlem süresinde çözülemeyen Samanyolu çift beyaz cücelerinin galaktik karmaşa gürültüsünü temsil eder.
+
+\subsection{Dalga Formu ve Çok Parametreli Fisher Bilgi Matrisi}
+İkili kara delik birleşmeleri için frekans uzayında 0PN TaylorF2 genliği:
+\begin{equation}
+\mathcal{A}(f) = \sqrt{\frac{5}{24}} \frac{1}{\pi^{2/3}} \frac{c}{d_L} \left( \frac{G \mathcal{M}_c}{c^3} \right)^{5/6} f^{-7/6}
+\end{equation}
+En iç kararlı dairesel yörünge frekansı $f_{\text{isco}} = c^3 / (6^{3/2} \pi G M_{\text{total}})$ üst limit kesimi olarak alınmıştır.
+
+Parametre uzayı $\boldsymbol{\theta} = \{ \ln \mathcal{M}_c, t_c, \phi_c, \alpha_M \}$ için Fisher Bilgi Matrisi elemanları:
+\begin{equation}
+\Gamma_{ij} = 4 \text{Re} \int_{f_{\min}}^{f_{\text{isco}}} \frac{\partial \tilde{h}^*(f)}{\partial \theta_i} \frac{\partial \tilde{h}(f)}{\partial \theta_j} \frac{1}{S_n(f)} df
+\end{equation}
+olarak hesaplanmıştır. Parametreler arası dejeneresansları ve korelasyonları içeren kovaryans matrisi $\boldsymbol{\Sigma} = \boldsymbol{\Gamma}^{-1}$ ters çevrilerek marjinalize edilmiş duyarlılık $\sigma(\alpha_M) = \sqrt{\Sigma_{44}}$ elde edilmiştir.
+
+\begin{table}[htbp]
+\centering
+\caption{Farklı süper kütleli kara delik ikilileri ($z=1.0$, $d_L \approx 6.7$ Gpc) için LISA duyarlılık simülasyonu sonuçları.}
+\label{tab:lisa_results}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Kütle Bileşenleri ($M_1 + M_2$)} & \textbf{SNR} & \textbf{$\sigma(\alpha_M)$ [İzole 1D]} & \textbf{$\sigma(\alpha_M)$ [Marjinalize 4D]} & \textbf{$f_{\text{isco}}$ [Hz]} \\
+\midrule
+$10^6 + 10^5 M_\odot$ & 895.1 & $5.8 \times 10^{-9}$ & $2.98 \times 10^{-4}$ & $1.99 \times 10^{-3}$ \\
+$10^6 + 10^6 M_\odot$ & 950.0 & $6.75 \times 10^{-9}$ & $\mathbf{2.81 \times 10^{-4}}$ & $1.09 \times 10^{-3}$ \\
+$10^7 + 10^7 M_\odot$ & 146.9 & $4.1 \times 10^{-8}$ & $1.83 \times 10^{-3}$ & $1.09 \times 10^{-4}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tablo \ref{tab:lisa_results}, $10^6 + 10^6 M_\odot$ aralığındaki birleşmelerde LISA'nın $\alpha_M$ duyarlılığını mevcut kozmolojik sınırlara kıyasla iki mertebe iyileştirerek $\sigma(\alpha_M) \approx 2.81 \times 10^{-4}$ seviyesine indirebileceğini göstermektedir.
+
+\section{Tartışma ve Sonuç}
+Bu çalışmada, uzay-zaman eğriliğine kuantum entropi yoğunluğuyla bağlanan Entropik Skaler-Tensör Kütleçekimi (ESTG) modeli, çoklu-mesajcı astrofiziksel ve kozmolojik verilerle sınanmıştır. Elde edilen temel sonuçlar şunlardır:
+\begin{itemize}
+    \item \textbf{Gözlemsel Uyumluluk:} Teori, GW170817'den gelen $c_T = c$ kısıtını kendiliğinden sağlamakta ve $\beta \le 0.075$ dipol kısıtı ile Güneş Sistemi testlerini başarıyla geçmektedir.
+    \item \textbf{Kozmolojik Sınırlar:} Planck 2018, BBN ve LIGO O3 MCMC analizi, $|\alpha_M| < 0.027$ (\%95 C.L.) sınırını vermektedir. $\Delta\text{AIC} = 1.92$ ve $\ln B = -0.93$, modelin mevcut verilerle GR'a karşı istatistiksel bir üstünlük kurmadığını, ancak dışlanmadığını da kanıtlamaktadır.
+    \item \textbf{LISA ile Yanlışlanabilirlik:} LISA uzay gözlemevi, süper kütleli kara delik birleşmelerinde yapacağı yüksek hassasiyetli gözlemlerle bu sınırı $\sigma(\alpha_M) \sim 10^{-4}$ düzeyine çekecek ve ESTG teorisini kesin olarak doğrulama veya yanlışlama gücüne sahip olacaktır.
+\end{itemize}
+
+\section*{Kod ve Veri Erişimi}
+Çalışmada kullanılan simülasyon kodları, Robson et al. (2019) LISA gürültü modeli, MCMC zincirleri ve master çalıştırma betiği açık kaynaklı olarak \url{https://github.com/batu-ta/ESTG_MCMC_LISA} adresinde mevcuttur.
+
+\begin{thebibliography}{99}
+\bibitem{Will2018} C. M. Will, \textit{Theory and Experiment in Gravitational Physics}, Cambridge University Press (2018).
+\bibitem{Planck2020} Planck Collaboration, \textit{Planck 2018 results. VI. Cosmological parameters}, Astron. Astrophys. \textbf{641}, A6 (2020).
+\bibitem{Cooke2018} R. Cooke et al., \textit{One Percent Determination of the Primordial Deuterium Abundance}, Astrophys. J. \textbf{855}, 102 (2018).
+\bibitem{LIGO2021} LIGO Scientific Collaboration, \textit{Tests of General Relativity with GWTC-2}, Phys. Rev. X \textbf{11}, 021053 (2021).
+\bibitem{Robson2019} T. Robson, N. J. Cornish, C. Liu, \textit{The construction and use of LISA sensitivity curves}, Class. Quantum Grav. \textbf{36}, 105011 (2019).
+\bibitem{Baker2017} T. Baker et al., \textit{Strong Constraints on Cosmological Gravity from GW170817 and GRB 170817A}, Phys. Rev. Lett. \textbf{119}, 251304 (2017).
+\bibitem{Damour1992} T. Damour, G. Esposito-Farèse, \textit{Tensor-multi-scalar theories of gravitation}, Phys. Rev. D \textbf{46}, 4128 (1992).
+\bibitem{Khoury2004} J. Khoury, A. Weltman, \textit{Chameleon fields: Awaiting surprises for tests of gravity in space}, Phys. Rev. D \textbf{69}, 044026 (2004).
+\bibitem{Blas2011} D. Blas, J. Lesgourgues, T. Tram, \textit{The Cosmic Linear Anisotropy Solving System (CLASS) II: Approximation schemes}, JCAP \textbf{07}, 034 (2011).
+\bibitem{Audren2013} B. Audren et al., \textit{Conservative Constraints on Early Dark Energy with Monte Python}, JCAP \textbf{02}, 001 (2013).
+\end{thebibliography}
+
+\end{document}
