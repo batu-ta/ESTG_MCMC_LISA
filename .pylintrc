@@ -1,0 +1,23 @@
+[MAIN]
+ignore=CVS,.git,__pycache__,.ipynb_checkpoints
+ignore-patterns=.*\.ipynb
+
+[MESSAGES CONTROL]
+disable=
+    invalid-name,
+    line-too-long,
+    too-many-locals,
+    too-many-arguments,
+    too-many-positional-arguments,
+    missing-function-docstring,
+    missing-module-docstring,
+    missing-class-docstring,
+    import-error,
+    no-name-in-module,
+    too-few-public-methods,
+    no-else-return,
+    trailing-whitespace,
+    wrong-import-position
+
+[FORMAT]
+max-line-length=120

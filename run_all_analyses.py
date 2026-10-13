@@ -9,11 +9,8 @@ import sys
 import numpy as np
 from scipy.optimize import minimize
 from scipy.stats import gaussian_kde
-import matplotlib.pyplot as plt
-
 # lisa modülünü ekle
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from lisa.waveform_estg import lisa_psd, gr_taylorf2_amplitude, G, c, M_SUN, MPC
 from lisa.fisher_matrix import fisher_analysis_estg
 
 
@@ -136,7 +133,7 @@ def run_lisa_simulation():
 
 if __name__ == "__main__":
     np.random.seed(42)
-    samples = run_mcmc()
-    run_model_comparison(samples)
+    mcmc_samples = run_mcmc()
+    run_model_comparison(mcmc_samples)
     run_lisa_simulation()
     print("\n[TAMAMLANDI] Tüm analizler başarıyla çalıştırıldı ve doğrulandı!\n")

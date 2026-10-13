@@ -7,7 +7,7 @@ import numpy as np
 from lisa.waveform_estg import lisa_psd, gr_taylorf2_amplitude, G, c
 
 
-def fisher_analysis_estg(f_min=1e-5, M1_msun=1e6, M2_msun=1e6, z=1.0, dL_mpc=6700.0, alpha_M_fid=0.0):
+def fisher_analysis_estg(f_min=1e-5, M1_msun=1e6, M2_msun=1e6, z=1.0, dL_mpc=6700.0, _alpha_M_fid=0.0):
     """
     Parametre vektörü theta = [ln(Mc), t_c, phi_c, alpha_M] için
     kovaryans matrisini ters çevirerek gerçekçi 1-sigma duyarlılıklarını hesaplar.
@@ -98,7 +98,7 @@ def fisher_analysis_estg(f_min=1e-5, M1_msun=1e6, M2_msun=1e6, z=1.0, dL_mpc=670
     }
 
 
-def fisher_alpha_M(f, h_gr, alpha_M, Mc, Sn, f_min=1e-5):
+def fisher_alpha_M(f, h_gr, _alpha_M, Mc, Sn, f_min=1e-5):
     """Eski fonksiyonlarla geriye dönük uyumluluk için sarmalayıcı."""
     prefactor = (5.0 / 192.0) * (G * Mc / c**3)**(-5.0 / 3.0)
     dpsi_dalpha = prefactor * (f_min**(-5.0 / 3.0) - f**(-5.0 / 3.0))
