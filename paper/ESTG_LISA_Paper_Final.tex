@@ -210,22 +210,28 @@ The covariance matrix is obtained via matrix inversion, $\boldsymbol{\Sigma} = \
 \centering
 \caption{LISA signal-to-noise ratios (SNR) and marginalized parameter sensitivity for supermassive black hole binary coalescences at $z=1.0$ ($d_L \approx 6.7$ Gpc).}
 \label{tab:lisa_results}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccc}
 \toprule
-\textbf{Binary Masses ($M_1 + M_2$)} & \textbf{SNR} & \textbf{$\sigma(\alpha_M)$ [Unmarginalized 1D]} & \textbf{$\sigma(\alpha_M)$ [Marginalized 4D]} & \textbf{$f_{\text{isco}}$ [Hz]} \\
+\textbf{Binary Masses ($M_1 + M_2$)} & \textbf{SNR} & \textbf{$\sigma(\alpha_M)$ [1D Unmarginalized]} & \textbf{$\sigma(\alpha_M)$ [4D Marginalized]} & \textbf{$f_{\text{isco}}$ [Hz]} \\
 \midrule
 $10^6 + 10^5 M_\odot$ & 895.1 & $5.80 \times 10^{-9}$ & $2.98 \times 10^{-4}$ & $1.99 \times 10^{-3}$ \\
 $10^6 + 10^6 M_\odot$ & 950.0 & $6.75 \times 10^{-9}$ & $\mathbf{2.81 \times 10^{-4}}$ & $1.09 \times 10^{-3}$ \\
 $10^7 + 10^7 M_\odot$ & 146.9 & $4.10 \times 10^{-8}$ & $1.83 \times 10^{-3}$ & $1.09 \times 10^{-4}$ \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 A critical numerical finding is that marginalizing over the full parameter space degrades the ideal isolated single-parameter sensitivity from $\sigma_{\text{1D}}(\alpha_M) \approx 6.75 \times 10^{-9}$ to the realistic marginalized value $\sigma(\alpha_M) \approx 2.81 \times 10^{-4}$, an increase by a factor of $\sim 4 \times 10^4$. 
 
 This degradation is not a numerical artifact, but a fundamental consequence of physical collinearity:
 \begin{itemize}
-    \item The Fisher matrix exhibits eigenvalues spanning twenty orders of magnitude: $[\lambda_1 = 9.33 \times 10^{-4}, \lambda_2 = 1.34 \times 10^3, \lambda_3 = 6.42 \times 10^{11}, \lambda_4 = 2.20 \times 10^{16}]$, giving a condition number of $\kappa(\boldsymbol{\Gamma}) \approx 4.23 \times 10^{19}$.
+    \item The Fisher matrix exhibits eigenvalues spanning twenty orders of magnitude:
+    \begin{equation*}
+    \lambda_1 = 9.33 \times 10^{-4}, \quad \lambda_2 = 1.34 \times 10^3, \quad \lambda_3 = 6.42 \times 10^{11}, \quad \lambda_4 = 2.20 \times 10^{16}
+    \end{equation*}
+    yielding a condition number of $\kappa(\boldsymbol{\Gamma}) \approx 4.23 \times 10^{19}$.
     \item Inspection of the normalized correlation matrix reveals that $\alpha_M$ correlates near-perfectly with the coalescence phase $\phi_c$ ($r = +1.000000$) and chirp mass $\ln \mathcal{M}_c$ ($r = -0.999721$), because the 0PN phase modification shares the exact $f^{-5/3}$ frequency dependency with the leading chirp mass term.
     \item Numerical stability was verified using Singular Value Decomposition (SVD), confirming that $\boldsymbol{\Sigma} \boldsymbol{\Gamma} = \mathbf{I}$ holds to machine precision.
 \end{itemize}
