@@ -1,0 +1,18 @@
+# Normalise text files to LF in the repository.
+* text=auto
+
+# Scripts and code run under Linux (WSL, clusters, Docker, CI): always LF,
+# also in Windows checkouts, otherwise bash fails with "$'\r': command not found".
+*.sh        text eol=lf
+*.py        text eol=lf
+*.yaml      text eol=lf
+*.yml       text eol=lf
+*.param     text eol=lf
+Dockerfile  text eol=lf
+
+# Data tables read by numpy / getdist
+*.txt       text eol=lf
+
+# Binary files: never touch
+*.png       binary
+*.pdf       binary
