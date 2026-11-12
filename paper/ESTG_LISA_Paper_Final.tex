@@ -1,5 +1,4 @@
 \documentclass[11pt,a4paper]{article}
-\usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
@@ -16,271 +15,263 @@
     urlcolor=blue
 }
 
-\title{\textbf{Constraining Entropic Scalar-Tensor Gravity with Planck, BBN, and LISA: \\ A Multi-Messenger and Data Analysis Approach}}
+\title{\textbf{Entropic Scalar-Tensor Gravity as Brans--Dicke Theory:\\ Planck 2018 and BBN Constraints and Prospects for LISA Standard Sirens}}
 \author{\textbf{Ahmet Batuhan Dündar}}
-\date{July 2026}
+\date{November 2026}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-We investigate the cosmological and astrophysical constraints on Entropic Scalar-Tensor Gravity (ESTG), a theoretical framework where a scalar field couples non-minimally to spacetime curvature through the local quantum entanglement entropy density. To satisfy stringent local Solar System constraints (e.g., from the Cassini mission), the theory is equipped with a Chameleon screening mechanism. Utilizing multi-messenger observational datasets---comprising Planck 2018 cosmic microwave background (CMB) measurements, Big Bang Nucleosynthesis (BBN) light element abundances, and LIGO/Virgo O3 gravitational-wave upper bounds---we perform a four-chain Metropolis-Hastings Markov Chain Monte Carlo (MCMC) analysis. Parameterizing the background running Planck mass by its present-day amplitude $\alpha_{M,0} \approx 0.65\beta$ under the Chameleon BBN prior, we derive a robust cosmological bound of $|\alpha_M| < 0.027$ at 95\% C.L., with excellent chain convergence ($R - 1 = 0.0003$). Model comparison using the Akaike Information Criterion ($\Delta\text{AIC} = 1.92$) and the Savage-Dickey density ratio for the Bayes factor ($\ln B = -0.93$) reveals that current cosmological data are statistically indistinguishable between General Relativity (GR) and ESTG.
-
-Looking ahead to future observational prospects, we assess the discovery and constraining capability of the space-based Laser Interferometer Space Antenna (LISA). Incorporating the realistic analytical LISA noise power spectral density of Robson, Cornish \& Liu (2019) and frequency-domain 0PN TaylorF2 waveforms with leading-order modified phasing, we execute a four-parameter marginalized Fisher Information Matrix analysis across $\{\ln \mathcal{M}_c, t_c, \phi_c, \alpha_M\}$. For supermassive black hole binary coalescences ($10^6 + 10^6 M_\odot$ at $z=1$), taking into account severe physical collinearity with coalescence phase and chirp mass, and terminating at the innermost stable circular orbit (ISCO) cutoff, LISA will measure $\alpha_M$ with a marginalized sensitivity of $\sigma(\alpha_M) \approx 2.81 \times 10^{-4}$. This improves existing cosmological bounds by two orders of magnitude, establishing ESTG as a fully testable and falsifiable candidate for modified gravity.
+We study the observational status of Entropic Scalar-Tensor Gravity (ESTG), a scalar-tensor framework in which a scalar field, motivated by the local entanglement entropy density, couples to curvature through $F(\phi) = M_{\rm Pl}^2 \exp(2\beta\phi/M_{\rm Pl})$. We show that the ESTG Jordan-frame action with a canonical kinetic term is exactly Brans--Dicke theory with $\omega_{\rm BD} = 1/(4\beta^2)$ at $F = M_{\rm Pl}^2$, so that its cosmological limit is Brans--Dicke plus a cosmological constant. We also show that the commonly used effective-field-theory parameterisation $\alpha_M \propto \Omega_{\rm DE}$ with the scalar-tensor relation $\alpha_B = -\alpha_M$ is gradient-unstable for every non-zero amplitude, and is therefore not a valid description of this model. Solving the full linear Brans--Dicke cosmology with \texttt{hi\_class} and fitting the Planck 2018 temperature, polarisation and lensing likelihoods together with a BBN prior on the baryon density, we compute the profile likelihood of $\beta$. We find $\beta < 0.024$ (95\% one-sided), equivalent to $\omega_{\rm BD} > 421$ and to a present-day running of the Planck mass $\alpha_{M,0} < 3.7 \times 10^{-3}$. The best fit lies at $\beta = 0$; ESTG does not improve the fit ($\Delta{\rm AIC} = +2$). Along the profile the best-fit Hubble constant increases with $\beta$, reflecting the known $H_0$--$\omega_{\rm BD}$ degeneracy. Finally, we assess LISA. A running Planck mass changes the gravitational-wave luminosity distance rather than the waveform phase, and at the Planck bound the effect is $d_L^{\rm GW}/d_L^{\rm EM} - 1 \approx 1\times10^{-3}$ at $z=1$. A Fisher forecast for massive black-hole binary standard sirens gives $\sigma(\alpha_{M,0}) \approx 0.04$--$0.07$ for 10--30 events, an order of magnitude weaker than the CMB bound. LISA standard sirens are therefore not expected to improve the constraint on ESTG.
 \end{abstract}
 
 \section{Introduction}
-General Relativity (GR) has achieved remarkable predictive success across a vast range of scales, from precision Solar System experiments to cosmological surveys. However, foundational puzzles---most notably the cosmological constant problem, the unknown microscopic nature of dark matter and dark energy, and the non-renormalizability of gravity at quantum scales---continue to motivate extensions beyond standard Einsteinian gravity. Concurrently, theoretical developments inspired by the Holographic Principle, black hole thermodynamics, and AdS/CFT duality suggest that spacetime geometry and gravitational dynamics may emerge fundamentally from microscopic quantum information and quantum entanglement entropy \cite{Jacobson1995,Verlinde2011,VanRaamsdonk2010}.
+General Relativity (GR) has achieved remarkable predictive success across a vast range of scales, from precision Solar System experiments to cosmological surveys. However, foundational puzzles---most notably the cosmological constant problem, the unknown nature of dark matter and dark energy, and the non-renormalizability of gravity---continue to motivate extensions of Einsteinian gravity. Theoretical developments inspired by black hole thermodynamics, the holographic principle and AdS/CFT duality suggest that spacetime geometry and gravitational dynamics may emerge from quantum information and entanglement entropy \cite{Jacobson1995,Verlinde2011,VanRaamsdonk2010}.
 
-In this work, we operationalize this theoretical paradigm into a fully testable, falsifiable scalar-tensor theory where local quantum entanglement entropy couples non-minimally to spacetime curvature. The foundational physical postulate of the framework is:
+In this work we consider a scalar-tensor theory motivated by this idea, in which the local entanglement entropy density couples non-minimally to curvature. The guiding postulate is:
 \begin{quote}
 \textit{Postulate:} At each spacetime point, a scalar field $\phi(x^\mu)$ associated with matter density characterizes the local quantum entanglement entropy density, entering the gravitational field equations as a dynamical source term.
 \end{quote}
 
-The primary objective of this paper is to establish the complete theoretical action from this information-theoretic postulate, extract cosmological parameter constraints using a rigorous MCMC protocol, and evaluate the upcoming observational sensitivity of the Laser Interferometer Space Antenna (LISA) to this framework.
+Our aims are (i) to identify precisely which known theory the resulting action corresponds to on cosmological scales, (ii) to constrain its single new parameter with the full Planck 2018 likelihoods and a BBN prior, using a Boltzmann code that solves the scalar-tensor perturbation equations, and (iii) to assess whether the Laser Interferometer Space Antenna (LISA) can improve on these constraints.
 
 \section{Theoretical Framework}
 
-\subsection{Derivation of the Action from the Entanglement Postulate}
-We begin by formalizing the connection between spacetime geometry and entanglement entropy. Following the thermodynamic gravity paradigm of Jacobson \cite{Jacobson1995} and generalized entanglement models, the local vacuum entanglement entropy density across a local causal horizon of area $\mathcal{A}$ obeys the Bekenstein-Hawking relation $S = \mathcal{A} / (4 G \hbar) = 2\pi k_B \mathcal{A} M_{Pl}^2 / \hbar$. In the presence of ambient matter fields, the local entanglement entropy density deviates from the pure geometric vacuum by a perturbation $\Delta s_{\text{ent}}$ parameterized by a dynamical scalar field $\phi$:
+\subsection{Action from the Entanglement Postulate}
+Following the thermodynamic gravity paradigm of Jacobson \cite{Jacobson1995}, the vacuum entanglement entropy across a local causal horizon of area $\mathcal{A}$ obeys the Bekenstein--Hawking relation $S = \mathcal{A}/(4G\hbar)$. In the presence of matter, we parameterise the deviation of the local entanglement entropy density from its vacuum value by a scalar field $\phi$:
 \begin{equation}
-s_{\text{ent}}(x^\mu) = s_0 \exp\left( \frac{2\beta \phi(x^\mu)}{M_{Pl}} \right) = s_0 \left[ 1 + \frac{2\beta \phi}{M_{Pl}} + \mathcal{O}\left(\frac{\beta^2 \phi^2}{M_{Pl}^2}\right) \right]
+s_{\text{ent}}(x^\mu) = s_0 \exp\left( \frac{2\beta \phi(x^\mu)}{M_{\rm Pl}} \right) = s_0 \left[ 1 + \frac{2\beta \phi}{M_{\rm Pl}} + \mathcal{O}\left(\frac{\beta^2 \phi^2}{M_{\rm Pl}^2}\right) \right],
 \label{eq:entropy_density}
 \end{equation}
-where $s_0 \equiv M_{Pl}^2 / 2$ is the fiducial vacuum entanglement scale and $\beta$ is a dimensionless coupling constant.
-
-By imposing the first law of local causal horizon thermodynamics, $\delta Q = T dS_{\text{total}}$, where $S_{\text{total}} = S_{\text{grav}} + S_{\text{ent}}$, the effective gravitational coupling acquires an explicit field dependence:
+where $s_0 \propto M_{\rm Pl}^2$ is the vacuum entanglement scale and $\beta$ is a dimensionless coupling. Imposing the first law of local horizon thermodynamics, $\delta Q = T\, dS_{\text{total}}$, with $S_{\text{total}} = S_{\text{grav}} + S_{\text{ent}}$, the effective gravitational coupling acquires a field dependence,
 \begin{equation}
-\frac{1}{16\pi G_{\text{eff}}(\phi)} = \frac{1}{2} F(\phi) = \frac{1}{2} M_{Pl}^2 \exp\left( \frac{2\beta \phi}{M_{Pl}} \right)
+\frac{1}{8\pi G_{\text{eff}}(\phi)} = F(\phi) = M_{\rm Pl}^2 \exp\left( \frac{2\beta \phi}{M_{\rm Pl}} \right).
 \end{equation}
-Promoting this thermodynamic equilibrium relation to a covariant four-dimensional field theory yields the physical Jordan-frame action:
+Promoting this relation to a covariant field theory gives the Jordan-frame action
 \begin{equation}
-S_J = \int d^4x \sqrt{-g} \left[ \frac{1}{2} F(\phi) R - \frac{1}{2} Z(\phi) (\partial_\mu \phi)(\partial^\mu \phi) - V(\phi) \right] + S_m(g_{\mu\nu}, \psi_m)
+S_J = \int d^4x \sqrt{-g} \left[ \frac{1}{2} F(\phi) R - \frac{1}{2} (\partial_\mu \phi)(\partial^\mu \phi) - V(\phi) \right] + S_m(g_{\mu\nu}, \psi_m),
 \label{eq:action_jordan}
 \end{equation}
-where $Z(\phi) = 1$ is the canonical kinetic factor, $V(\phi)$ is a Chameleon screening potential, and $S_m$ is the standard matter action minimally coupled to $g_{\mu\nu}$.
+where $V(\phi)$ is a potential (chameleon-type, Sec.~\ref{sec:local}) and matter couples minimally to $g_{\mu\nu}$.
 
-\subsection{Conformal Transformation and the Weak-Coupling Regime}
-To isolate the propagating degrees of freedom, we perform a conformal transformation to the Einstein frame:
+\subsection{Equivalence with Brans--Dicke Theory}
+\label{sec:bd}
+Defining the dimensionless field $\Phi \equiv F(\phi)/M_{\rm Pl}^2$, we have $(\partial\Phi)^2 = (2\beta/M_{\rm Pl})^2 \Phi^2 (\partial\phi)^2$, and Eq.~(\ref{eq:action_jordan}) becomes
 \begin{equation}
-\tilde{g}_{\mu\nu} = \Omega^2(x) g_{\mu\nu}, \quad \Omega^2(x) \equiv \frac{F(\phi)}{M_{Pl}^2} = \exp\left(\frac{2\beta \phi}{M_{Pl}}\right)
+S_J = \int d^4x \sqrt{-g}\, \left\{ \frac{M_{\rm Pl}^2}{2}\left[ \Phi R - \frac{\omega_{\rm BD}(\Phi)}{\Phi} (\partial\Phi)^2 \right] - V \right\} + S_m,
+\label{eq:bd}
 \end{equation}
-The canonically normalized Einstein-frame scalar field $\varphi$ is defined via the field redefinition:
+with
 \begin{equation}
-\left( \frac{d\varphi}{d\phi} \right)^2 = \frac{3}{2} \left( \frac{F_{,\phi}}{F} \right)^2 + \frac{Z(\phi)}{F(\phi)} = \frac{6\beta^2}{M_{Pl}^2} + \frac{1}{M_{Pl}^2} e^{-2\beta\phi/M_{Pl}}
-\label{eq:conformal_field}
+\omega_{\rm BD}(\Phi) = \frac{1}{4\beta^2\,\Phi}.
 \end{equation}
-Crucially, while early scalar-tensor formulations and $f(R)$ mappings frequently consider the strong-coupling asymptotic limit $\beta \gg 1$, physical ESTG operates strictly in the \textit{weak-coupling regime} ($\beta \ll 1$, with observational bounds requiring $\beta \le 0.075$). Expanding Eq.~(\ref{eq:conformal_field}) in powers of $\beta \phi / M_{Pl} \ll 1$ yields:
+This is Brans--Dicke theory with a potential. Since $\Phi$ changes by only a few per cent between BBN and today for the couplings of interest (Sec.~\ref{sec:results}), we treat
 \begin{equation}
-\left( \frac{d\varphi}{d\phi} \right)^2 \approx \frac{1}{M_{Pl}^2} \left( 1 + 6\beta^2 \right) \approx \frac{1}{M_{Pl}^2} \implies \varphi \approx \frac{\phi}{M_{Pl}}
+\omega_{\rm BD} = \frac{1}{4\beta^2}
+\label{eq:omega_beta}
 \end{equation}
-In this weak-coupling regime, the scalar-matter coupling function satisfies:
+as constant, its value at $\Phi = 1$. The same result follows in the Einstein frame. With $\tilde g_{\mu\nu} = \Phi\, g_{\mu\nu}$, the canonical field $\varphi$ satisfies
 \begin{equation}
-\alpha(\varphi) \equiv \frac{d\ln A(\varphi)}{d\varphi} = -\frac{1}{2} \frac{d\ln F}{d\varphi} \approx -\beta
+\left( \frac{d\varphi}{d\phi} \right)^2 = \frac{3}{2} M_{\rm Pl}^2 \left( \frac{F_{,\phi}}{F} \right)^2 + M_{\rm Pl}^2\frac{1}{F} = 6\beta^2 + e^{-2\beta\phi/M_{\rm Pl}},
 \end{equation}
-The resulting Einstein-frame action is:
+and matter couples through $A(\varphi) = \Phi^{-1/2}$ with strength
 \begin{equation}
-S_E = \int d^4x \sqrt{-\tilde{g}} \left[ \frac{M_{Pl}^2}{2} \tilde{R} - \frac{1}{2} (\tilde{\partial}_\mu \varphi)(\tilde{\partial}^\mu \varphi) - U(\varphi) \right] + S_m\left( A^2(\varphi)\tilde{g}_{\mu\nu}, \psi_m \right)
+\alpha_\varphi \equiv M_{\rm Pl}\frac{d\ln A}{d\varphi} = -\frac{\beta}{\sqrt{6\beta^2 + e^{-2\beta\phi/M_{\rm Pl}}}} \;\xrightarrow{\;\phi = 0\;}\; -\frac{\beta}{\sqrt{1+6\beta^2}} .
 \end{equation}
-where $U(\varphi) \equiv V(\phi(\varphi)) M_{Pl}^4 / F^2(\phi(\varphi))$ and $A(\varphi) \equiv \Omega^{-1}(\varphi) = e^{-\beta \varphi}$.
+The standard relation $2\omega_{\rm BD} + 3 = 1/(2\alpha_\varphi^2)$ \cite{Damour1992} then reproduces Eq.~(\ref{eq:omega_beta}) exactly. GR is recovered for $\beta \to 0$.
 
-\subsection{Field Equations and the Speed of Gravitational Waves}
-Varying $S_E$ with respect to $\tilde{g}_{\mu\nu}$ and $\varphi$ yields:
-\begin{align}
-\tilde{G}_{\mu\nu} &= \frac{1}{M_{Pl}^2} \left( \tilde{T}^{(m)}_{\mu\nu} + \tilde{T}^{(\varphi)}_{\mu\nu} \right) \\
-\tilde{\Box}\varphi - U_{,\varphi}(\varphi) &= -\frac{1}{M_{Pl}} \alpha(\varphi) \tilde{T}^{(m)}
-\end{align}
-On a spatially flat FLRW cosmological background, tensor perturbations $h_{ij}$ satisfy the wave equation in the Jordan frame:
+On cosmological scales we take the potential to act as a cosmological constant. This is the natural assumption for a chameleon-type potential, since such fields cannot drive cosmic acceleration in a way that differs observably from $\Lambda$ \cite{WangHuiKhoury2012}. The cosmological limit of ESTG is therefore Brans--Dicke theory plus $\Lambda$, with the single new parameter $\beta$.
+
+\subsection{Gravitational Waves and the Running Planck Mass}
+In the effective-field-theory (EFT) description of dark energy \cite{BelliniSawicki2014}, the theory is characterised by the effective Planck mass $M_*^2 = F$ and the functions $\alpha_K$, $\alpha_B$, $\alpha_M$, $\alpha_T$. For Eq.~(\ref{eq:action_jordan}),
 \begin{equation}
-\ddot{h}_{ij} + (3 + \alpha_M) H \dot{h}_{ij} - \frac{1}{a^2} \nabla^2 h_{ij} = 0
-\label{eq:tensor_prop}
-\end{equation}
-where $\alpha_M$ represents the running Planck mass parameter in the Effective Field Theory (EFT) of Dark Energy:
-\begin{equation}
-\alpha_M(t) \equiv \frac{1}{H} \frac{d\ln M_*^2}{dt} = \frac{2\beta}{H M_{Pl}} \dot{\phi}(t)
+\alpha_M \equiv \frac{d\ln M_*^2}{d\ln a} = \frac{2\beta\,\dot\phi}{H M_{\rm Pl}}, \qquad \alpha_B = -\alpha_M, \qquad \alpha_T = 0,
 \label{eq:alpha_M_def}
 \end{equation}
-In general Horndeski gravity, the gravitational-wave propagation speed is $c_T^2 = (1 + \alpha_T)/(1 - \alpha_H)$. Because the ESTG action contains no non-minimal derivative or kinetic braidings, $\alpha_T = \alpha_H = 0$, guaranteeing $c_T = c$ identically at all redshifts. This rigorously satisfies the multi-messenger constraint from GW170817/GRB170817A ($|c_T/c - 1| < 10^{-15}$) \cite{Baker2017}.
-
-\subsection{Chameleon Screening and Dipole Radiation Bounds}
-To reconcile non-zero cosmological coupling with Solar System tests, the effective potential incorporates a Chameleon mechanism:
+in the convention of Ref.~\cite{BelliniSawicki2014}. Tensor perturbations obey
 \begin{equation}
-V_{\text{eff}}(\phi) = V(\phi) + \rho_m e^{\beta \phi / M_{Pl}}, \quad m_{\text{eff}}^2 = V_{,\phi\phi} + \frac{\beta^2}{M_{Pl}^2} \rho_m e^{\beta \phi / M_{Pl}}
+\ddot{h}_{ij} + (3 + \alpha_M) H \dot{h}_{ij} - \frac{1}{a^2} \nabla^2 h_{ij} = 0 .
+\label{eq:tensor_prop}
 \end{equation}
-In dense environments (such as the Earth and the Sun), $m_{\text{eff}} \gg H_0$, suppressing the scalar field and enforcing $|\alpha_M| \lesssim 10^{-3}$, which comfortably satisfies the Cassini tracking bound $|\gamma - 1| < 2.3 \times 10^{-5}$ \cite{Will2018}.
+Since $\alpha_T = 0$, gravitational waves propagate at the speed of light, consistent with the joint observation of GW170817 and GRB\,170817A \cite{Abbott2017GRB,Baker2017}. The running $\alpha_M$ only adds friction, which changes the amplitude of gravitational waves but not their phase (Sec.~\ref{sec:lisa}).
 
-Furthermore, in scalar-tensor theories, asymmetric compact binaries emit dipolar gravitational radiation:
+\subsection{Local Tests and Screening}
+\label{sec:local}
+Without screening, Brans--Dicke theory gives the post-Newtonian parameter $\gamma - 1 = -1/(2+\omega_{\rm BD}) \simeq -4\beta^2$. The Cassini bound $|\gamma - 1| < 2.3 \times 10^{-5}$ \cite{Bertotti2003} then requires $\beta \lesssim 2.4 \times 10^{-3}$. Pulsar-timing tests of dipole radiation in white dwarf--neutron star binaries give constraints of comparable strength \cite{Freire2012}. Larger couplings are viable only if the scalar is screened in the Solar System. For a chameleon \cite{Khoury2004} the Einstein-frame effective potential is
 \begin{equation}
-\dot{P}_b^{\text{dipole}} = -\frac{2\pi G}{c^3} \frac{M_1 M_2}{M_1 + M_2} \frac{(\alpha_1 - \alpha_2)^2}{1 + \alpha_M} \frac{1}{P_b}
+V_{\text{eff}}(\varphi) = U(\varphi) + \tilde\rho_m A(\varphi), \qquad m_{\text{eff}}^2 = U_{,\varphi\varphi} + \tilde\rho_m A_{,\varphi\varphi},
 \end{equation}
-Given the binary neutron star bound from GW170817 ($|\dot{P}_b| \lesssim 10^{-14}$) and scalar charge differential $|\alpha_1 - \alpha_2| \sim 0.01 \beta$, this imposes the strict upper limit $\beta \lesssim 0.075$.
+where $U = V M_{\rm Pl}^4/F^2$. The field becomes heavy, and its fifth force short-ranged, in dense environments. Two consequences matter here. First, black holes carry no scalar charge in Brans--Dicke theory, so binary black holes emit no dipole radiation. Second, for chameleon screening to operate in the Milky Way, the scalar's Compton wavelength today must be $\lesssim 1$~Mpc, which makes its effect on linear cosmological scales negligible \cite{WangHuiKhoury2012}. The cosmological constraint derived below therefore applies to the branch of the theory in which the field is light on cosmological scales. In the screened branch, CMB data are essentially insensitive to $\beta$.
 
-\section{Cosmological Constraints and MCMC Analysis}
+\section{Cosmological Constraints}
 
-\subsection{Parameterization of the Running Planck Mass}
-From Eq.~(\ref{eq:alpha_M_def}), the cosmological evolution of the scalar field tracks the dark energy density $\Omega_{\text{DE}}(a)$. In standard EFT parameterizations, the time-dependent running Planck mass parameter follows:
-\begin{equation}
-\alpha_M(a) = \alpha_{M,0} \, \frac{\Omega_{\text{DE}}(a)}{\Omega_{\text{DE},0}}
-\end{equation}
-where $\alpha_{M,0} \equiv \alpha_M(a=1) \approx 0.65\beta$ is the present-day amplitude. In our MCMC analysis, we sample this constant present-day amplitude $\alpha_{M,0}$ (denoted simply as $\alpha_M$).
+\subsection{\texorpdfstring{Why Not $\alpha_M \propto \Omega_{\rm DE}$}{Why Not alpha_M proportional to Omega_DE}}
+\label{sec:propto}
+A common phenomenological choice is to take all EFT functions proportional to the dark-energy fraction, $\alpha_i(a) = c_i\, \Omega_{\rm DE}(a)$, so that $\alpha_M(a) = \alpha_{M,0}\,\Omega_{\rm DE}(a)/\Omega_{\rm DE,0}$. Imposing the ESTG relations $\alpha_B = -\alpha_M$ and $\alpha_T = 0$ (with $\alpha_K = \Omega_{\rm DE}$), we find with \texttt{hi\_class} that the scalar sound speed squared becomes negative for every $c_M \neq 0$. For $c_M > 0$ the gradient instability appears at early times, with $c_s^2 \simeq -c_M$. For $c_M < 0$ it appears today, with $c_s^2 \simeq c_M$. A time dependence $\alpha \propto \Omega_{\rm DE}$ is not one that a consistent Brans--Dicke background produces. We therefore solve the covariant Brans--Dicke theory directly instead of using an EFT parameterisation.
 
-\subsection{Observational Datasets and Likelihood Formulation}
-To place robust bounds on $\alpha_M$, we integrate three complementary cosmological probes:
+\subsection{Method and Data}
+We use \texttt{hi\_class} \cite{Zumalacarregui2017,Bellini2020} (version 3.4.0.1, based on CLASS v3.4 \cite{Lesgourgues2011,Blas2011}) with its covariant \texttt{brans\_dicke} model. Its parameters are $(V_0, \omega_{\rm BD}, \Phi_{\rm ini}, \Phi'_{\rm ini})$. $V_0$ is fixed by the closure relation and $\Phi_{\rm ini}$ by requiring $M_*^2 = 1$ today, i.e.\ the cosmological Newton constant equals its laboratory value. The field starts on its radiation-era attractor, and $\omega_{\rm BD}$ is set by Eq.~(\ref{eq:omega_beta}). The present-day running $\alpha_{M,0}$ is read off the background solution. Numerically we find $\alpha_{M,0} \simeq 6.2\,\beta^2$ for a Planck-like cosmology. The likelihood is evaluated with Cobaya \cite{Torrado2021} and the following data:
 \begin{enumerate}
-    \item \textbf{Planck 2018 CMB:} High-$\ell$ and low-$\ell$ temperature, polarization, and lensing likelihoods (TT, TE, EE + lowE + lensing) \cite{Planck2020}.
-    \item \textbf{Big Bang Nucleosynthesis (BBN):} Primordial deuterium abundance fixing $\Omega_b h^2 = 0.0222 \pm 0.0005$ \cite{Cooke2018}.
-    \item \textbf{LIGO/Virgo O3:} Empirical tensor friction upper bounds $|\alpha_M| < 0.05$ (90\% C.L.) \cite{LIGO2021}.
+    \item \textbf{Planck 2018 CMB} \cite{Planck2018V,Planck2018VI}: low-$\ell$ TT and low-$\ell$ EE, the high-$\ell$ TT,TE,EE \texttt{plik\_lite} likelihood (marginalised over foregrounds, with the calibration $A_{\rm Planck}$ free), all in their native Python implementations, and the CMB lensing likelihood \cite{Planck2018VIII}.
+    \item \textbf{BBN}: a Gaussian prior $\omega_b = 0.0222 \pm 0.0005$, a conservative width that encompasses primordial deuterium determinations \cite{Cooke2018}.
 \end{enumerate}
+We follow the Planck baseline with one massive neutrino of $0.06$~eV, and use HMcode \cite{Mead2021} for the non-linear matter power spectrum entering the lensing likelihood. The free parameters are $\{\ln(10^{10}A_s), n_s, H_0, \omega_b, \omega_{\rm cdm}, \tau_{\rm reio}, A_{\rm Planck}\}$ plus $\beta$. As a consistency check, at $\beta = 0$ the Brans--Dicke model and a pure $\Lambda$CDM run through the same code agree to $\Delta\chi^2 = 0.016$ in total.
 
-\subsection{MCMC Sampling, Prior Folding, and Convergence}
-We perform Markov Chain Monte Carlo sampling using a Metropolis-Hastings architecture across four parallel chains, collecting $100{,}000$ total samples after discarding a $20{,}000$-sample burn-in phase. The sampled parameter space is $\boldsymbol{\theta} = \{\alpha_M, \Omega_{\text{cdm}}, \Omega_b, h\}$ under uniform priors: $\alpha_M \in [-0.1, 0.1]$, $\Omega_{\text{cdm}} \in [0.05, 0.25]$, $\Omega_b \in [0.015, 0.030]$, and $h \in [0.5, 0.9]$.
+\subsection{Profile Likelihood}
+\label{sec:results}
+Because $\beta$ is the only parameter beyond $\Lambda$CDM, we constrain it with a profile likelihood. For each value of $\beta$ on a grid we hold $\beta$ fixed and maximise the likelihood (times the BBN and calibration priors) over all other parameters with Cobaya's derivative-free minimiser \cite{Cartis2019}, starting from the previous grid point's best fit. The result is shown in Table~\ref{tab:profile} and Fig.~\ref{fig:profile}. At $\beta = 0$ the best fit is the standard Planck $\Lambda$CDM cosmology ($H_0 = 67.35$, $n_s = 0.965$), with $\chi^2 = 23.3$ (low-$\ell$ TT), $396.1$ (low-$\ell$ EE), $582.8$ (\texttt{plik\_lite}) and $8.8$ (lensing).
 
-Chain convergence was verified via the Gelman-Rubin diagnostic:
-\begin{equation}
-R - 1 = \sqrt{\frac{\hat{V}}{W}} - 1 = 0.0003
-\end{equation}
-well below the standard convergence threshold of $R - 1 < 0.01$.
-
-The unconstrained MCMC posterior yields $\alpha_M = 0.0099 \pm 0.0297$, which formally spans $|\alpha_M| < 0.061$ at 95\% C.L. without physical boundary conditions. Figure~\ref{fig:mcmc_corner} displays the resulting marginalized 1D and 2D confidence contours across $\{\alpha_M, \Omega_{\text{cdm}}, h\}$. However, the scalar field coupling is physically subject to the Chameleon BBN constraint on the variation of the effective Newton constant: $|\Delta G / G|_{\text{BBN}} \le 0.05 \implies |\alpha_{M,0}| \le 0.048$. Folding this prior into the posterior distribution truncates the unphysical tails, yielding the combined 95\% C.L. credible interval:
-\begin{equation}
-|\alpha_M| < 0.027 \quad (95\%\text{ C.L.})
-\end{equation}
+\begin{table}[H]
+\centering
+\caption{Profile likelihood of $\beta$ from Planck 2018 + BBN. $\Delta\chi^2$ is relative to the global minimum, which lies at $\beta = 0$. $\alpha_{M,0}$ is the present-day running of the Planck mass from the \texttt{hi\_class} background, and $H_0$ is the best-fit value in km\,s$^{-1}$\,Mpc$^{-1}$.}
+\label{tab:profile}
+\begin{tabular}{ccccc}
+\toprule
+$\beta$ & $\omega_{\rm BD}$ & $\alpha_{M,0}$ & $H_0$ & $\Delta\chi^2$ \\
+\midrule
+0      & $\infty$ & 0                    & 67.35 & 0.00 \\
+0.004  & 15625    & $9.9\times10^{-5}$   & 67.41 & 0.01 \\
+0.008  & 3906     & $4.0\times10^{-4}$   & 67.59 & 0.13 \\
+0.012  & 1736     & $8.9\times10^{-4}$   & 67.71 & 0.56 \\
+0.016  & 977      & $1.6\times10^{-3}$   & 68.17 & 1.03 \\
+0.020  & 625      & $2.5\times10^{-3}$   & 68.72 & 1.73 \\
+0.025  & 400      & $3.9\times10^{-3}$   & 69.62 & 2.85 \\
+0.030  & 278      & $5.7\times10^{-3}$   & 70.96 & 4.37 \\
+0.040  & 156      & $1.0\times10^{-2}$   & 73.64 & 10.48 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.68\textwidth]{fig1_mcmc_corner.png}
-\caption{Marginalized 1D posterior distributions and 2D 68\% and 95\% confidence contours for $\{\alpha_M, \Omega_{\text{cdm}}, h\}$ obtained from our four-chain Metropolis-Hastings MCMC sampling across Planck 2018 CMB, BBN, and LIGO/Virgo O3 datasets ($R - 1 = 0.0003$).}
-\label{fig:mcmc_corner}
+\includegraphics[width=\textwidth]{fig1_profile_beta.png}
+\caption{Left: profile likelihood $\Delta\chi^2(\beta)$ from Planck 2018 (low-$\ell$ TT, low-$\ell$ EE, high-$\ell$ \texttt{plik\_lite} TT,TE,EE, lensing) and a BBN prior on $\omega_b$. Dotted lines mark $\Delta\chi^2 = 2.71$ (95\% one-sided) and $3.84$. Right: best-fit $H_0$ along the profile.}
+\label{fig:profile}
 \end{figure}
 
-\subsection{Model Selection: AIC and Savage-Dickey Bayes Factor}
-Evaluating the best-fit $\chi^2$ via Nelder-Mead optimization yields:
-\begin{itemize}
-    \item Standard GR ($\alpha_M = 0$ fixed, $k=23$ degrees of freedom): $\chi^2_{\text{GR}} = 2844.02$
-    \item ESTG ($\alpha_M$ freely varied, $k=24$ degrees of freedom): $\chi^2_{\text{ESTG}} = 2843.94$
-    \item Difference: $\Delta\chi^2 = -0.08$
-\end{itemize}
-Computing the Akaike Information Criterion ($\text{AIC} \equiv \chi^2 + 2k$):
+Since $\beta \ge 0$ and the minimum lies on the boundary $\beta = 0$, we quote the one-sided 95\% limit from $\Delta\chi^2 = 2.71$, obtained by linear interpolation between grid points:
 \begin{equation}
-\Delta\text{AIC} = \text{AIC}_{\text{ESTG}} - \text{AIC}_{\text{GR}} = 1.92
+\beta < 0.024 \quad\Longleftrightarrow\quad \omega_{\rm BD} > 421 \quad\Longleftrightarrow\quad \alpha_{M,0} < 3.7\times10^{-3} \qquad (95\%).
 \end{equation}
-Because $\Delta\text{AIC} < 2$, the marginal improvement in goodness-of-fit does not justify the extra degree of freedom, showing no statistical preference for ESTG over GR.
+The more conservative $\Delta\chi^2 = 3.84$ threshold gives $\beta < 0.028$ ($\omega_{\rm BD} > 313$). The numerical accuracy of the individual minimisations is $\delta\chi^2 \approx 0.1$--$0.2$, which translates into an uncertainty of about $\pm 0.001$ on the limit. This bound is of the same order as previous CMB constraints on Brans--Dicke theory \cite{Avilez2014,Ballardini2020}. It is about an order of magnitude weaker than the unscreened Solar System bound of Sec.~\ref{sec:local}, but it probes the scalar on cosmological scales and at early times.
 
-To compute the Bayesian evidence ratio between the nested models, we employ the Savage-Dickey density ratio:
+At the 95\% limit the effective gravitational constant during BBN, $G \propto 1/M_*^2$, exceeds its present value by $1.9\%$. This is well within BBN bounds on a varying $G$, which are at the $\sim\!10\%$ level \cite{Copi2004}. In our pipeline this shift enters the expansion history but not the CLASS helium-abundance prediction, which is a negligible effect at this level.
+
+\subsection{Model Comparison}
+The global minimum of the profile is at $\beta = 0$, so adding $\beta$ does not lower $\chi^2$: $\Delta\chi^2 = \chi^2_{\rm ESTG} - \chi^2_{\rm GR} = 0$. The Akaike Information Criterion therefore changes by
 \begin{equation}
-B_{01} = \frac{p(\alpha_M = 0 \mid \text{data})}{\pi(\alpha_M = 0)} \implies \ln B = -0.93
+\Delta{\rm AIC} = \Delta\chi^2 + 2\,\Delta k = +2 ,
 \end{equation}
-According to the Jeffreys scale, $|\ln B| < 1$ indicates that current cosmological datasets remain statistically agnostic between GR and ESTG.
+mildly in favour of GR. Current CMB and BBN data show no preference for ESTG. A Bayesian evidence calculation requires a full posterior and depends on the prior range assumed for $\beta$; we leave it for future work.
 
-\section{LISA Sensitivity Forecasts and Fisher Matrix Analysis}
+The right panel of Fig.~\ref{fig:profile} shows that the best-fit $H_0$ rises with $\beta$, from $67.4$ at $\beta=0$ to $69.6$ near the 95\% limit, because the larger effective gravitational constant in the early universe ($M_*^2 < 1$ before today) raises the early expansion rate and shrinks the sound horizon \cite{Ballardini2020}. With CMB data alone this direction is only weakly penalised. Adding baryon acoustic oscillation data would test whether ESTG can relieve the Hubble tension without spoiling the fit to the expansion history.
 
-\subsection{Analytical LISA Sensitivity Curve}
-To assess whether next-generation gravitational-wave detectors can break this cosmological degeneracy, we model the sky-averaged analytical strain sensitivity curve $S_n(f)$ established by Robson, Cornish \& Liu (2019) \cite{Robson2019}, with arm length $L = 2.5 \times 10^9$ m and transfer frequency $f_* = c / (2\pi L) \approx 19.09$ mHz:
+\section{Prospects for LISA}
+\label{sec:lisa}
+
+\subsection{LISA Sensitivity}
+We model the sky-averaged LISA sensitivity with the analytic curve of Robson, Cornish \& Liu \cite{Robson2019}, with arm length $L = 2.5 \times 10^9$ m and transfer frequency $f_* = c / (2\pi L) \approx 19.09$ mHz:
 \begin{equation}
-S_n(f) = \frac{10}{3 L^2} \left[ P_{\text{oms}}(f) + \frac{4 P_{\text{acc}}(f)}{(2\pi f)^4} \right] \left[ 1 + \frac{6}{10} \left(\frac{f}{f_*}\right)^2 \right] + S_c(f)
+S_n(f) = \frac{10}{3 L^2} \left[ P_{\text{oms}}(f) + \frac{4 P_{\text{acc}}(f)}{(2\pi f)^4} \right] \left[ 1 + \frac{6}{10} \left(\frac{f}{f_*}\right)^2 \right] + S_c(f),
 \end{equation}
-where the Optical Metrology System (OMS) displacement noise and test mass acceleration noise are:
+where
 \begin{align}
-P_{\text{oms}}(f) &= (1.5 \times 10^{-11}\text{ m})^2 \left[ 1 + \left(\frac{2\text{ mHz}}{f}\right)^4 \right] \\
-P_{\text{acc}}(f) &= (3.0 \times 10^{-15}\text{ m/s}^2)^2 \left[ 1 + \left(\frac{0.4\text{ mHz}}{f}\right)^2 \right] \left[ 1 + \left(\frac{f}{8\text{ mHz}}\right)^4 \right]
+P_{\text{oms}}(f) &= (1.5 \times 10^{-11}\text{ m})^2 \left[ 1 + \left(\frac{2\text{ mHz}}{f}\right)^4 \right], \\
+P_{\text{acc}}(f) &= (3.0 \times 10^{-15}\text{ m/s}^2)^2 \left[ 1 + \left(\frac{0.4\text{ mHz}}{f}\right)^2 \right] \left[ 1 + \left(\frac{f}{8\text{ mHz}}\right)^4 \right],
 \end{align}
-and $S_c(f)$ accounts for the Galactic compact binary confusion noise over a nominal 4-year mission duration.
-
-\subsection{Waveform Modeling and 0PN Phase Correction}
-For an inspiraling binary black hole system, the frequency-domain gravitational waveform under the stationary phase approximation is given by:
-\begin{equation}
-\tilde{h}(f) = \mathcal{A}(f) \exp\left( -i \Psi_{\text{ESTG}}(f) \right)
-\end{equation}
-with sky-averaged 0PN TaylorF2 amplitude:
-\begin{equation}
-\mathcal{A}(f) = \sqrt{\frac{5}{24}} \frac{1}{\pi^{2/3}} \frac{c}{d_L} \left( \frac{G \mathcal{M}_c}{c^3} \right)^{5/6} f^{-7/6}
-\end{equation}
-where $\mathcal{M}_c \equiv (M_1 M_2)^{3/5} / (M_1 + M_2)^{1/5}$ is the chirp mass. The waveform phase incorporates the modified gravitational damping induced by $\alpha_M$:
-\begin{equation}
-\Psi_{\text{ESTG}}(f) = 2\pi f t_c - \phi_c - \frac{\pi}{4} + \frac{3}{128}(\pi \mathcal{M}_c f)^{-5/3} \left[ 1 - \frac{25}{512} \alpha_M \right]
-\label{eq:waveform_phase}
-\end{equation}
-The modified phase shift,
-\begin{equation}
-\delta\Psi_{\alpha_M}(f) = -\frac{75}{65536} \alpha_M (\pi \mathcal{M}_c f)^{-5/3} \propto v^{-5},
-\end{equation}
-manifests as a \textbf{0PN leading-order correction} to the inspiral phase. The analytical waveform derivative with respect to $\alpha_M$ is:
-\begin{equation}
-\frac{\partial \tilde{h}(f)}{\partial \alpha_M} = -i \left( \frac{\partial \Psi_{\text{ESTG}}}{\partial \alpha_M} \right) \tilde{h}(f) = i \frac{75}{65536} (\pi \mathcal{M}_c f)^{-5/3} \tilde{h}(f)
-\end{equation}
-Integration terminates at the innermost stable circular orbit (ISCO) frequency, $f_{\text{isco}} = c^3 / (6^{3/2} \pi G M_{\text{total}})$. As illustrated in Figure~\ref{fig:lisa_strain}, the characteristic inspiral strains of supermassive black hole binaries at $z = 1.0$ remain several orders of magnitude above the LISA noise floor prior to coalescence.
+and $S_c(f)$ is the Galactic confusion noise for a 4-year mission. Figure~\ref{fig:lisa_strain} shows that massive black-hole binaries (MBHBs) at $z = 1$ are detected with signal-to-noise ratios of order $10^2$--$10^3$.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.80\textwidth]{fig2_lisa_strain.png}
-\caption{Sky-averaged LISA characteristic strain sensitivity $\sqrt{f S_n(f)}$ from Robson, Cornish \& Liu (2019) (solid black curve including 4-year Galactic confusion noise; dashed gray curve showing pure instrumental noise) compared against characteristic inspiral strain $h_c(f) = 2f|\tilde{h}(f)|$ for supermassive black hole binaries at $z = 1.0$. Filled circles denote the ISCO cutoff frequencies.}
+\caption{Sky-averaged LISA characteristic strain sensitivity $\sqrt{f S_n(f)}$ \cite{Robson2019} (solid: including 4-year Galactic confusion noise; dashed: instrumental noise only), compared with the characteristic inspiral strain $h_c(f) = 2f|\tilde{h}(f)|$ of MBHBs at $z = 1$. Filled circles mark the ISCO frequencies.}
 \label{fig:lisa_strain}
 \end{figure}
 
-\subsection{Fisher Matrix Marginalization and Numerical Collinearity}
-We evaluate the full four-parameter Fisher Information Matrix over $\boldsymbol{\theta} = \{ \ln \mathcal{M}_c, t_c, \phi_c, \alpha_M \}$:
+\subsection{\texorpdfstring{The Waveform Phase Does Not Constrain $\alpha_M$}{The Waveform Phase Does Not Constrain alpha_M}}
+Equation~(\ref{eq:tensor_prop}) shows that $\alpha_M$ enters only as friction, so it changes the amplitude of the signal during propagation but not its phase. Two further points rule out a phase test. First, black holes carry no scalar charge in Brans--Dicke theory, so there is no dipole term. Second, any correction proportional to the leading Newtonian phase, $\delta\Psi \propto (\pi \mathcal{M}_c f)^{-5/3}$ plus a constant, is an exact linear combination of the derivatives of $\Psi$ with respect to $\ln\mathcal{M}_c$ and $\phi_c$. It is absorbed into the chirp mass and coalescence phase.
+
+We verified numerically that a Fisher analysis over $\{\ln\mathcal{M}_c, t_c, \phi_c, \delta\}$ with such a term does return a finite $\sigma(\delta)$. That value, however, comes entirely from the $\mathcal{M}_c^{5/6}$ scaling of the amplitude: it equals $[(5/6)\,{\rm SNR}\,k]^{-1}$ with $k = (2/3)\pi^{5/3}$. Once the luminosity distance is included as a free parameter, the Fisher matrix becomes singular to machine precision. Such phase-based estimates should therefore not be used for this class of theories \cite{Vallisneri2008}.
+
+\subsection{Standard Sirens}
+The observable effect of a running Planck mass is the ratio of the gravitational-wave and electromagnetic luminosity distances \cite{Belgacem2018,Lagos2019}:
 \begin{equation}
-\Gamma_{ij} = 4 \text{Re} \int_{f_{\min}}^{f_{\text{isco}}} \frac{\partial \tilde{h}^*(f)}{\partial \theta_i} \frac{\partial \tilde{h}(f)}{\partial \theta_j} \frac{1}{S_n(f)} df
+\frac{d_L^{\rm GW}(z)}{d_L^{\rm EM}(z)} = \frac{M_*(0)}{M_*(z)} = \exp\left[ \frac{1}{2}\int_0^z \frac{\alpha_M(z')}{1+z'}\, dz' \right].
 \end{equation}
-The covariance matrix is obtained via matrix inversion, $\boldsymbol{\Sigma} = \boldsymbol{\Gamma}^{-1}$, with marginalized 1-$\sigma$ parameter uncertainty $\sigma(\alpha_M) = \sqrt{\boldsymbol{\Sigma}_{44}}$.
+We compute $M_*^2(z)$ directly from the \texttt{hi\_class} Brans--Dicke background. In the regime of interest the deviation is linear in $\alpha_{M,0}$: at the 95\% Planck limit, $d_L^{\rm GW}/d_L^{\rm EM} - 1 = 0.7$, $1.1$, $1.6$ and $2.3 \times 10^{-3}$ at $z = 0.5$, $1$, $2$ and $4$.
+
+To measure this ratio, sirens need an electromagnetic counterpart that provides the redshift. We forecast $\sigma(\alpha_{M,0})$ for $N$ MBHB sirens spread uniformly over $0.5 \le z \le 4$. For each siren the fractional distance error combines three terms in quadrature:
+\begin{itemize}
+    \item an instrumental error (5\% baseline, 2\% optimistic);
+    \item weak lensing, $\sigma_{\rm lens}/d_L = 0.066\,[(1-(1+z)^{-0.25})/0.25]^{1.8}$ \cite{Tamanini2016}, either without delensing (baseline) or reduced by 50\% (optimistic);
+    \item peculiar velocities of 500 km\,s$^{-1}$ \cite{Kocsis2006}.
+\end{itemize}
+$H_0$ and $\Omega_m$ are marginalised with Planck-like Gaussian priors. The results are given in Table~\ref{tab:sirens}.
 
 \begin{table}[H]
 \centering
-\caption{LISA signal-to-noise ratios (SNR) and marginalized parameter sensitivity for supermassive black hole binary coalescences at $z=1.0$ ($d_L \approx 6.7$ Gpc).}
-\label{tab:lisa_results}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lcccc}
+\caption{Forecast 1$\sigma$ error on $\alpha_{M,0}$ from $N$ LISA MBHB standard sirens with electromagnetic counterparts ($0.5 \le z \le 4$), for the Brans--Dicke evolution of $M_*(z)$. The Planck + BBN 95\% limit is $\alpha_{M,0} < 3.7\times10^{-3}$.}
+\label{tab:sirens}
+\begin{tabular}{lccccc}
 \toprule
-\textbf{Binary Masses ($M_1 + M_2$)} & \textbf{SNR} & \textbf{$\sigma(\alpha_M)$ [1D Unmarginalized]} & \textbf{$\sigma(\alpha_M)$ [4D Marginalized]} & \textbf{$f_{\text{isco}}$ [Hz]} \\
+$N$ & 1 & 3 & 10 & 30 & 100 \\
 \midrule
-$10^6 + 10^5 M_\odot$ & 895.1 & $5.80 \times 10^{-9}$ & $2.98 \times 10^{-4}$ & $1.99 \times 10^{-3}$ \\
-$10^6 + 10^6 M_\odot$ & 950.0 & $6.75 \times 10^{-9}$ & $\mathbf{2.81 \times 10^{-4}}$ & $1.09 \times 10^{-3}$ \\
-$10^7 + 10^7 M_\odot$ & 146.9 & $4.10 \times 10^{-8}$ & $1.83 \times 10^{-3}$ & $1.09 \times 10^{-4}$ \\
+Baseline (5\% instr., no delensing) & 0.18 & 0.12 & 0.065 & 0.041 & 0.029 \\
+Optimistic (2\% instr., 50\% delensing) & 0.088 & 0.061 & 0.036 & 0.027 & 0.022 \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table}
 
-A critical numerical finding is that marginalizing over the full parameter space degrades the ideal isolated single-parameter sensitivity from $\sigma_{\text{1D}}(\alpha_M) \approx 6.75 \times 10^{-9}$ to the realistic marginalized value $\sigma(\alpha_M) \approx 2.81 \times 10^{-4}$, an increase by a factor of $\sim 4 \times 10^4$. 
-
-This degradation is not a numerical artifact, but a fundamental consequence of physical collinearity:
-\begin{itemize}
-    \item The Fisher matrix exhibits eigenvalues spanning twenty orders of magnitude:
-    \begin{equation*}
-    \lambda_1 = 9.33 \times 10^{-4}, \quad \lambda_2 = 1.34 \times 10^3, \quad \lambda_3 = 6.42 \times 10^{11}, \quad \lambda_4 = 2.20 \times 10^{16}
-    \end{equation*}
-    yielding a condition number of $\kappa(\boldsymbol{\Gamma}) \approx 4.23 \times 10^{19}$.
-    \item Inspection of the normalized correlation matrix reveals that $\alpha_M$ correlates near-perfectly with the coalescence phase $\phi_c$ ($r = +1.000000$) and chirp mass $\ln \mathcal{M}_c$ ($r = -0.999721$), because the 0PN phase modification shares the exact $f^{-5/3}$ frequency dependency with the leading chirp mass term.
-    \item Numerical stability was verified using Singular Value Decomposition (SVD), confirming that $\boldsymbol{\Sigma} \boldsymbol{\Gamma} = \mathbf{I}$ holds to machine precision.
-\end{itemize}
-Even after fully accounting for this parameter degeneracy, LISA's marginalized sensitivity $\sigma(\alpha_M) \approx 2.81 \times 10^{-4}$ represents a two-order-of-magnitude leap over current cosmological bounds.
+Over a 4-year mission LISA is expected to observe a few to a few tens of MBHB sirens with counterparts, depending on the population model \cite{Tamanini2016}. Even in the optimistic case, $\sigma(\alpha_{M,0}) \gtrsim 0.03$, roughly ten times larger than the Planck bound. The forecast saturates at large $N$ because of the $H_0$ and $\Omega_m$ priors. LISA standard sirens alone are therefore not expected to improve the constraint on ESTG.
 
 \section{Discussion and Conclusions}
-In this work, we presented a comprehensive, multi-messenger observational appraisal of Entropic Scalar-Tensor Gravity (ESTG). The key findings of this study are:
+Our main results are:
 \begin{itemize}
-    \item \textbf{Theoretical Consistency:} The non-minimal coupling $F(\phi) = M_{Pl}^2 e^{2\beta\phi/M_{Pl}}$ is systematically derived from the local quantum entanglement entropy density postulate. Operating in the physical weak-coupling regime ($\beta \ll 1$), the model preserves $c_T = c$, meeting the GW170817 speed-of-gravity test, while the Chameleon mechanism reconciles Cassini Solar System bounds with binary pulsar dipole radiation constraints ($\beta \lesssim 0.075$).
-    \item \textbf{Cosmological Bounds:} Multi-probe MCMC analysis combining Planck 2018, BBN, and LIGO O3 yields $|\alpha_M| < 0.027$ at 95\% C.L. Model selection via $\Delta\text{AIC} = 1.92$ and Bayes factor $\ln B = -0.93$ indicates that current cosmological observations are fully consistent with GR.
-    \item \textbf{Decisive Falsifiability with LISA:} Due to the immense signal-to-noise ratio of supermassive black hole coalescences, LISA will achieve a marginalized sensitivity of $\sigma(\alpha_M) \approx 2.81 \times 10^{-4}$. This guarantees that ESTG will either be detected through clean 0PN phase deviations or decisively ruled out by the 2030s.
+    \item \textbf{ESTG is Brans--Dicke theory.} With a canonical kinetic term, the coupling $F(\phi) = M_{\rm Pl}^2 e^{2\beta\phi/M_{\rm Pl}}$ is equivalent to Brans--Dicke theory with $\omega_{\rm BD} = 1/(4\beta^2)$. Its cosmological limit is Brans--Dicke $+\,\Lambda$, and it satisfies $c_T = c$.
+    \item \textbf{The $\alpha_M \propto \Omega_{\rm DE}$ parameterisation is unstable.} Combined with the scalar-tensor relation $\alpha_B = -\alpha_M$, it is gradient-unstable for every non-zero amplitude, so constraints derived from it do not apply to ESTG.
+    \item \textbf{Cosmological bound.} A profile likelihood with the full Planck 2018 likelihoods and a BBN prior gives $\beta < 0.024$, i.e.\ $\omega_{\rm BD} > 421$ and $\alpha_{M,0} < 3.7\times10^{-3}$ (95\%). The best fit is GR ($\Delta{\rm AIC} = +2$). The best-fit $H_0$ grows with $\beta$.
+    \item \textbf{LISA.} The waveform phase does not constrain $\alpha_M$. Standard sirens reach $\sigma(\alpha_{M,0}) \approx 0.03$--$0.07$, an order of magnitude weaker than the CMB bound.
 \end{itemize}
 
+Several caveats apply. The cosmological bound assumes that the scalar is light on cosmological scales. If chameleon screening is active in the Milky Way, the field's cosmological effect is negligible \cite{WangHuiKhoury2012}, and the relevant constraints are local and depend on the screening potential. We treated $\omega_{\rm BD}$ as constant, neglecting its few-per-cent variation through $\Phi$. The lensing likelihood uses HMcode, which is calibrated on $\Lambda$CDM. Natural extensions are a full Bayesian MCMC, the addition of BAO and supernova data to test the $H_0$ direction, and a treatment of the screened regime.
+
 \section*{Data Availability}
-The simulation pipelines, MCMC chains, and analytical LISA calculation modules supporting the findings of this study are openly available on GitHub at \url{https://github.com/batu-ta/ESTG_MCMC_LISA}.
+The analysis pipeline (Cobaya configuration, \texttt{hi\_class} interface, profile-likelihood and standard-siren codes) and the best-fit files for every grid point are available at \url{https://github.com/batu-ta/ESTG_MCMC_LISA} in the \texttt{analysis/} directory. The results use \texttt{hi\_class} 3.4.0.1 (commit \texttt{b425aef}) and Cobaya 3.6.2.
 
 \begin{thebibliography}{99}
 \bibitem{Jacobson1995} T. Jacobson, \textit{Thermodynamics of Spacetime: The Einstein Equation of State}, Phys. Rev. Lett. \textbf{75}, 1260 (1995).
 \bibitem{Verlinde2011} E. Verlinde, \textit{On the Origin of Gravity and the Laws of Newton}, JHEP \textbf{04}, 029 (2011).
 \bibitem{VanRaamsdonk2010} M. Van Raamsdonk, \textit{Building up spacetime with quantum entanglement}, Gen. Relativ. Gravit. \textbf{42}, 2323 (2010).
-\bibitem{Will2018} C. M. Will, \textit{Theory and Experiment in Gravitational Physics}, Cambridge University Press (2018).
-\bibitem{Planck2020} Planck Collaboration, \textit{Planck 2018 results. VI. Cosmological parameters}, Astron. Astrophys. \textbf{641}, A6 (2020).
-\bibitem{Cooke2018} R. Cooke et al., \textit{One Percent Determination of the Primordial Deuterium Abundance}, Astrophys. J. \textbf{855}, 102 (2018).
-\bibitem{LIGO2021} LIGO Scientific Collaboration, \textit{Tests of General Relativity with GWTC-2}, Phys. Rev. X \textbf{11}, 021053 (2021).
-\bibitem{Robson2019} T. Robson, N. J. Cornish, C. Liu, \textit{The construction and use of LISA sensitivity curves}, Class. Quantum Grav. \textbf{36}, 105011 (2019).
+\bibitem{Damour1992} T. Damour, G. Esposito-Farèse, \textit{Tensor-multi-scalar theories of gravitation}, Class. Quantum Grav. \textbf{9}, 2093 (1992).
+\bibitem{WangHuiKhoury2012} J. Wang, L. Hui, J. Khoury, \textit{No-Go Theorems for Generalized Chameleon Field Theories}, Phys. Rev. Lett. \textbf{109}, 241301 (2012).
+\bibitem{BelliniSawicki2014} E. Bellini, I. Sawicki, \textit{Maximal freedom at minimum cost: linear large-scale structure in general modifications of gravity}, JCAP \textbf{07}, 050 (2014).
+\bibitem{Abbott2017GRB} LIGO Scientific, Virgo, Fermi-GBM and INTEGRAL Collaborations, \textit{Gravitational Waves and Gamma-Rays from a Binary Neutron Star Merger: GW170817 and GRB 170817A}, Astrophys. J. Lett. \textbf{848}, L13 (2017).
 \bibitem{Baker2017} T. Baker et al., \textit{Strong Constraints on Cosmological Gravity from GW170817 and GRB 170817A}, Phys. Rev. Lett. \textbf{119}, 251304 (2017).
-\bibitem{Damour1992} T. Damour, G. Esposito-Farèse, \textit{Tensor-multi-scalar theories of gravitation}, Phys. Rev. D \textbf{46}, 4128 (1992).
-\bibitem{Khoury2004} J. Khoury, A. Weltman, \textit{Chameleon fields: Awaiting surprises for tests of gravity in space}, Phys. Rev. D \textbf{69}, 044026 (2004).
+\bibitem{Bertotti2003} B. Bertotti, L. Iess, P. Tortora, \textit{A test of general relativity using radio links with the Cassini spacecraft}, Nature \textbf{425}, 374 (2003).
+\bibitem{Freire2012} P. C. C. Freire et al., \textit{The relativistic pulsar--white dwarf binary PSR J1738+0333 -- II. The most stringent test of scalar-tensor gravity}, Mon. Not. R. Astron. Soc. \textbf{423}, 3328 (2012).
+\bibitem{Khoury2004} J. Khoury, A. Weltman, \textit{Chameleon fields: Awaiting surprises for tests of gravity in space}, Phys. Rev. Lett. \textbf{93}, 171104 (2004).
+\bibitem{Zumalacarregui2017} M. Zumalacárregui, E. Bellini, I. Sawicki, J. Lesgourgues, P. G. Ferreira, \textit{hi\_class: Horndeski in the Cosmic Linear Anisotropy Solving System}, JCAP \textbf{08}, 019 (2017).
+\bibitem{Bellini2020} E. Bellini, I. Sawicki, M. Zumalacárregui, \textit{hi\_class: Background evolution, initial conditions and approximation schemes}, JCAP \textbf{02}, 008 (2020).
+\bibitem{Lesgourgues2011} J. Lesgourgues, \textit{The Cosmic Linear Anisotropy Solving System (CLASS) I: Overview}, arXiv:1104.2932 (2011).
 \bibitem{Blas2011} D. Blas, J. Lesgourgues, T. Tram, \textit{The Cosmic Linear Anisotropy Solving System (CLASS) II: Approximation schemes}, JCAP \textbf{07}, 034 (2011).
-\bibitem{Audren2013} B. Audren et al., \textit{Conservative Constraints on Early Dark Energy with Monte Python}, JCAP \textbf{02}, 001 (2013).
+\bibitem{Torrado2021} J. Torrado, A. Lewis, \textit{Cobaya: code for Bayesian analysis of hierarchical physical models}, JCAP \textbf{05}, 057 (2021).
+\bibitem{Planck2018V} Planck Collaboration, \textit{Planck 2018 results. V. CMB power spectra and likelihoods}, Astron. Astrophys. \textbf{641}, A5 (2020).
+\bibitem{Planck2018VI} Planck Collaboration, \textit{Planck 2018 results. VI. Cosmological parameters}, Astron. Astrophys. \textbf{641}, A6 (2020).
+\bibitem{Planck2018VIII} Planck Collaboration, \textit{Planck 2018 results. VIII. Gravitational lensing}, Astron. Astrophys. \textbf{641}, A8 (2020).
+\bibitem{Cooke2018} R. Cooke, M. Pettini, C. Steidel, \textit{One Percent Determination of the Primordial Deuterium Abundance}, Astrophys. J. \textbf{855}, 102 (2018).
+\bibitem{Mead2021} A. Mead, S. Brieden, T. Tröster, C. Heymans, \textit{HMcode-2020: improved modelling of non-linear cosmological power spectra with baryonic feedback}, Mon. Not. R. Astron. Soc. \textbf{502}, 1401 (2021).
+\bibitem{Cartis2019} C. Cartis, J. Fiala, B. Marteau, L. Roberts, \textit{Improving the Flexibility and Robustness of Model-based Derivative-free Optimization Solvers}, ACM Trans. Math. Softw. \textbf{45}, 32 (2019).
+\bibitem{Avilez2014} A. Avilez, C. Skordis, \textit{Cosmological constraints on Brans-Dicke theory}, Phys. Rev. Lett. \textbf{113}, 011101 (2014).
+\bibitem{Ballardini2020} M. Ballardini, M. Braglia, F. Finelli, D. Paoletti, A. A. Starobinsky, C. Umiltà, \textit{Scalar-tensor theories of gravity, neutrino physics, and the $H_0$ tension}, JCAP \textbf{10}, 044 (2020).
+\bibitem{Copi2004} C. J. Copi, A. N. Davis, L. M. Krauss, \textit{A New Nucleosynthesis Constraint on the Variation of $G$}, Phys. Rev. Lett. \textbf{92}, 171301 (2004).
+\bibitem{Robson2019} T. Robson, N. J. Cornish, C. Liu, \textit{The construction and use of LISA sensitivity curves}, Class. Quantum Grav. \textbf{36}, 105011 (2019).
+\bibitem{Vallisneri2008} M. Vallisneri, \textit{Use and abuse of the Fisher information matrix in the assessment of gravitational-wave parameter-estimation prospects}, Phys. Rev. D \textbf{77}, 042001 (2008).
+\bibitem{Belgacem2018} E. Belgacem, Y. Dirian, S. Foffa, M. Maggiore, \textit{Gravitational-wave luminosity distance in modified gravity theories}, Phys. Rev. D \textbf{97}, 104066 (2018).
+\bibitem{Lagos2019} M. Lagos, M. Fishbach, P. Landry, D. E. Holz, \textit{Standard sirens with a running Planck mass}, Phys. Rev. D \textbf{99}, 083504 (2019).
+\bibitem{Tamanini2016} N. Tamanini et al., \textit{Science with the space-based interferometer eLISA. III: Probing the expansion of the Universe using gravitational wave standard sirens}, JCAP \textbf{04}, 002 (2016).
+\bibitem{Kocsis2006} B. Kocsis, Z. Frei, Z. Haiman, K. Menou, \textit{Finding the electromagnetic counterparts of cosmological standard sirens}, Astrophys. J. \textbf{637}, 27 (2006).
 \end{thebibliography}
 
 \end{document}
