@@ -4,6 +4,7 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{booktabs}
+\usepackage{float}
 \usepackage{hyperref}
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
@@ -146,9 +147,9 @@ The unconstrained MCMC posterior yields $\alpha_M = 0.0099 \pm 0.0297$, which fo
 |\alpha_M| < 0.027 \quad (95\%\text{ C.L.})
 \end{equation}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
-\includegraphics[width=0.78\textwidth]{fig1_mcmc_corner.png}
+\includegraphics[width=0.68\textwidth]{fig1_mcmc_corner.png}
 \caption{Marginalized 1D posterior distributions and 2D 68\% and 95\% confidence contours for $\{\alpha_M, \Omega_{\text{cdm}}, h\}$ obtained from our four-chain Metropolis-Hastings MCMC sampling across Planck 2018 CMB, BBN, and LIGO/Virgo O3 datasets ($R - 1 = 0.0003$).}
 \label{fig:mcmc_corner}
 \end{figure}
@@ -200,15 +201,19 @@ where $\mathcal{M}_c \equiv (M_1 M_2)^{3/5} / (M_1 + M_2)^{1/5}$ is the chirp ma
 \Psi_{\text{ESTG}}(f) = 2\pi f t_c - \phi_c - \frac{\pi}{4} + \frac{3}{128}(\pi \mathcal{M}_c f)^{-5/3} \left[ 1 - \frac{25}{512} \alpha_M \right]
 \label{eq:waveform_phase}
 \end{equation}
-The modified phase term $\delta\Psi_{\alpha_M}(f) = -\frac{75}{65536} \alpha_M (\pi \mathcal{M}_c f)^{-5/3} \propto v^{-5}$ manifests as a \textbf{0PN leading-order correction} to the inspiral phase. The analytical waveform derivative with respect to $\alpha_M$ is:
+The modified phase shift,
+\begin{equation}
+\delta\Psi_{\alpha_M}(f) = -\frac{75}{65536} \alpha_M (\pi \mathcal{M}_c f)^{-5/3} \propto v^{-5},
+\end{equation}
+manifests as a \textbf{0PN leading-order correction} to the inspiral phase. The analytical waveform derivative with respect to $\alpha_M$ is:
 \begin{equation}
 \frac{\partial \tilde{h}(f)}{\partial \alpha_M} = -i \left( \frac{\partial \Psi_{\text{ESTG}}}{\partial \alpha_M} \right) \tilde{h}(f) = i \frac{75}{65536} (\pi \mathcal{M}_c f)^{-5/3} \tilde{h}(f)
 \end{equation}
 Integration terminates at the innermost stable circular orbit (ISCO) frequency, $f_{\text{isco}} = c^3 / (6^{3/2} \pi G M_{\text{total}})$. As illustrated in Figure~\ref{fig:lisa_strain}, the characteristic inspiral strains of supermassive black hole binaries at $z = 1.0$ remain several orders of magnitude above the LISA noise floor prior to coalescence.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
-\includegraphics[width=0.85\textwidth]{fig2_lisa_strain.png}
+\includegraphics[width=0.80\textwidth]{fig2_lisa_strain.png}
 \caption{Sky-averaged LISA characteristic strain sensitivity $\sqrt{f S_n(f)}$ from Robson, Cornish \& Liu (2019) (solid black curve including 4-year Galactic confusion noise; dashed gray curve showing pure instrumental noise) compared against characteristic inspiral strain $h_c(f) = 2f|\tilde{h}(f)|$ for supermassive black hole binaries at $z = 1.0$. Filled circles denote the ISCO cutoff frequencies.}
 \label{fig:lisa_strain}
 \end{figure}
@@ -220,7 +225,7 @@ We evaluate the full four-parameter Fisher Information Matrix over $\boldsymbol{
 \end{equation}
 The covariance matrix is obtained via matrix inversion, $\boldsymbol{\Sigma} = \boldsymbol{\Gamma}^{-1}$, with marginalized 1-$\sigma$ parameter uncertainty $\sigma(\alpha_M) = \sqrt{\boldsymbol{\Sigma}_{44}}$.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{LISA signal-to-noise ratios (SNR) and marginalized parameter sensitivity for supermassive black hole binary coalescences at $z=1.0$ ($d_L \approx 6.7$ Gpc).}
 \label{tab:lisa_results}
