@@ -1,3 +1,5 @@
+# SUPERSEDED - non-functional stub (data.planck.get_chi2 and cosmo.alpha_M do not
+# exist in MontePython/CLASS). The real analysis is in analysis/ (hi_class + Cobaya).
 import numpy as np
 from montepython.likelihood_class import Likelihood
 

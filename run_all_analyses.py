@@ -1,5 +1,9 @@
 """
-ESTG ve LISA Analiz Protokolü - Ana Çalıştırma Betiği
+SUPERSEDED - DO NOT USE FOR RESULTS. See README.md and analysis/.
+The "Planck" likelihood below is a set of hand-written Gaussians, not the Planck
+data, and the LISA Fisher result is an artefact of a degenerate phase term.
+
+ESTG ve LISA Analiz Protokolü - Ana Çalıştırma Betiği (eski sürüm)
 Bu betik tüm analizleri (Kozmolojik MCMC, Model Seçimi, LISA Fisher Matrisi)
 sırayla çalıştırır ve sonuçları doğrular.
 """

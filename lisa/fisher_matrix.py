@@ -1,6 +1,12 @@
 """
+SUPERSEDED - DO NOT USE FOR RESULTS. See README.md and analysis/lisa/.
+The alpha_M phase term used here is an exact linear combination of the
+ln(Mc) and phi_c derivatives; the finite sigma(alpha_M) comes only from the
+amplitude, and the Fisher matrix is singular once ln(d_L) is free
+(analysis/lisa/phase_degeneracy_check.py).
+
 LISA verileri üzerinde ESTG parametreleri için çok parametreli (Marginalized)
-Fisher Bilgi Matrisi (FIM) analizi.
+Fisher Bilgi Matrisi (FIM) analizi (eski sürüm).
 """
 
 import numpy as np
